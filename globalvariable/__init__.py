@@ -1,0 +1,1 @@
+from .globalvariable import readContext

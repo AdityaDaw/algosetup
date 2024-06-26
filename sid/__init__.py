@@ -1,0 +1,1 @@
+from .sidfetcher import  getsid3
