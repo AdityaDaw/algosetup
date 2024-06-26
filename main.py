@@ -1,17 +1,26 @@
 import timeit
 
-from algorithm import signal, ohlc_plot_candles, signal_chart, performance
+import numpy as np
+import pandas as pd
+
+from algorithm import signal, ohlc_plot_candles_main, signal_chart, performance
 from algorithm.indicators import ma,smoothed_ma
 from getdata.getdataframe import get_time, get_time_series_data
 import matplotlib.pyplot as plt
+from algorithm.indicators import marubozu_signal,three_column_signal,tasuki_signal
 
 
 
 if __name__ == '__main__':
-    start_secs = '01-06-2024 00:00:00'
+    start_secs = '01-05-2024 00:00:00'
     end_secs = '26-06-2024 00:00:00'
-    ret = get_time_series_data(start_secs,end_secs)
-
-    my_data = ret.values
-    my_data = ma(my_data, 20, 3, 4)
+    ret = get_time_series_data(start_secs,end_secs,interval=5)
+    my_data = ret.values.astype('f')
+    my_data = tasuki_signal(my_data)
+    my_data = pd.DataFrame(my_data)
+    # ohlc_plot_candles_main(my_data)
+    # print(my_data)
+    my_data = my_data.loc[my_data[5] == -1]
+    print(my_data)
+    my_data = my_data.loc[my_data[4] == 1]
     print(my_data)
