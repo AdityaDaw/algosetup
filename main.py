@@ -12,8 +12,8 @@ from algorithm.indicators import *
 
 
 if __name__ == '__main__':
-    start_secs = '01-05-2024 00:00:00'
-    end_secs = '26-06-2024 00:00:00'
+    start_secs = '01-08-2024 00:00:00'
+    end_secs = '26-09-2024 00:00:00'
     ret = get_time_series_data(start_secs,end_secs,interval=5)
     my_data = ret.values.astype('f')
     my_data = on_neck_signal(my_data)

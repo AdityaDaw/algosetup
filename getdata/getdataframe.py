@@ -14,6 +14,11 @@ def get_time_series_data(start:str,end:str,exchange='NSE',token='26000',interval
     """'17-06-2024 00:00:00'"""
     start_timestamp = get_time(start)
     end_timestamp = get_time(end)
+    holdings = api.get_holdings()
+    if holdings is None:
+        raise RuntimeWarning("The holding details is empty")
+    else:
+        print(holdings)
     ret = api.get_time_price_series(exchange=exchange,starttime=start_timestamp,endtime=end_timestamp,interval=interval,token=token)
     if ret is None:
         raise RuntimeWarning("The return data is None")
