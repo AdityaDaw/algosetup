@@ -4,7 +4,7 @@ from pandas import DataFrame
 
 from sessioncreator import apiSessionCreator
 
-api = apiSessionCreator()
+
 
 def get_time(time_string):
     data = time.strptime(time_string, '%d-%m-%Y %H:%M:%S')
@@ -14,6 +14,7 @@ def get_time_series_data(start:str,end:str,exchange='NSE',token='26000',interval
     """'17-06-2024 00:00:00'"""
     start_timestamp = get_time(start)
     end_timestamp = get_time(end)
+    api = apiSessionCreator()
     holdings = api.get_holdings()
     if holdings is None:
         raise RuntimeWarning("The holding details is empty")
