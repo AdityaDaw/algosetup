@@ -1,3 +1,5 @@
 /algosetup.iml
 /globalvariable/config.ini
 .idea
+*__pycache__*
+globalvariable/config_local.ini
