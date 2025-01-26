@@ -1,14 +1,4 @@
-import timeit
-
-import numpy as np
-import pandas as pd
-
-from Procedure.main import Procedure
-from algorithm import signal, ohlc_plot_candles_main, signal_chart, performance
-from algorithm.indicators import ma,smoothed_ma
-from getdata.getdataframe import get_time, get_time_series_data
-import matplotlib.pyplot as plt
-from algorithm.indicators import *
+from getdata.getdataframe import get_time_series_data
 
 if __name__ == '__main__':
     start_secs = '17-06-2024 00:00:00'
