@@ -39,19 +39,22 @@ def getfreshtoken():
     except:
         print("There is some error while getting Fresh token")
 
+
 def gettokenfromdatabase():
     try:
         engine  =  createengine()
         today = str(gettoday())
         query = f"select * from FlatTrade.Token WHERE DATE ='{today}'"
-        print(query)
+        # print(query)
         conn = engine.connect()
         result = conn.execute(text(query))
         # print(list(result.keys()))
+        conn.close()
         res = result.all()
         if (len(res) > 1): print(f"There is issue with counts more than 1 count={len(res)}")
         for result in res:
             return result.Token
+
     except Exception as ex:
         print("There is some issue while getting the token from data base")
         raise ex
