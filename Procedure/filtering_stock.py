@@ -9,7 +9,7 @@ from reading_symbol.data_class import STOCK
 from reading_symbol.get_symbol import get_stocks
 
 
-def orchestration() -> List[STOCK]:
+def stock_filtered_list() -> List[STOCK]:
     list_of_stocks: List[STOCK] = get_stocks()
     filtered_stock: List[STOCK] = []
     with multiprocessing.Pool(processes=10) as pool:  # Use 4 CPU cores
