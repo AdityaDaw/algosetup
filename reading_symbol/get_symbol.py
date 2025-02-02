@@ -5,14 +5,17 @@ import os.path
 
 from typing import List
 
+from sqlalchemy import or_
 from sqlalchemy.orm import sessionmaker
 
 from gettoken.additionalfunction import createengine
-from reading_symbol.data_class import STOCK
+from reading_symbol.data_class import STOCK, dataclass_from_dict
 from util.logger import CustomLogger
+from util.tables.batches import Batches
 from util.tables.stocks import Stocks
 
 logger = CustomLogger.create_logger(__name__)
+
 
 def get_stocks() -> List[STOCK]:
     stocks : List[STOCK] = []
@@ -59,7 +62,19 @@ def process_orchestration(stock: STOCK):
         logger.exception(f"Error while inserting data in the table {str(ex)}")
 
 
+def get_stocks_from_database() -> List[STOCK]:
+    # Create Engine and Session
+    engine = createengine()
+    Session = sessionmaker(bind=engine)
+    session = Session()
+
+    # Select and update specific rows
+    stocks_list = session.query(Stocks).filter(or_(Stocks.INSTRUMENT == "EQ",Stocks.INSTRUMENT == "INDEX")).all()
+    list_of_stock_dataclass = [dataclass_from_dict(STOCK,stock.__dict__) for stock in stocks_list]
+    logger.info(list_of_stock_dataclass)
+
+    return list_of_stock_dataclass
 
 
 if __name__ == "__main__":
-    insert_stocks()
+    get_stocks_from_database()

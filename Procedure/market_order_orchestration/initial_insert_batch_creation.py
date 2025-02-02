@@ -1,4 +1,5 @@
 import multiprocessing
+from datetime import datetime, timedelta
 from symbol import return_stmt
 from typing import List, Optional, Tuple
 
@@ -23,6 +24,8 @@ def batch_creation(list_of_stocks :List[STOCK]):
         results = pool.map(process_orchestration, mapped_with_batch_id)
     filtered_data = [item for item in results if item is not None]
 
+    return batch_id
+
 
 def insert_data(batch_id: int, stock :STOCK, selling_price: float, quantity : int) -> int:
     try:
@@ -36,7 +39,7 @@ def insert_data(batch_id: int, stock :STOCK, selling_price: float, quantity : in
             TRADING_SYMBOL = stock.TRADING_SYMBOL,
             TRADING_TOKEN = stock.TOKEN,
             STATUS = "Open",
-            SELILNG_PRICE = selling_price,
+            SELLING_PRICE = selling_price,
             QUANTITY = quantity,
             VALUE = quantity * selling_price
         )
@@ -84,24 +87,41 @@ def process_orchestration(batch_id_mapped_stock: Tuple[int,STOCK]) -> Optional[S
         purchase_price = get_buy_price(stock)
         logger.info(f"We are going o purchase the stock in this price - {purchase_price}")
 
+        return last_insert_id
+
     except RuntimeError as rt:
         logger.exception(f"There is error while running this {stock.TRADING_SYMBOL}")
         logger.error(str(rt))
 
     return None
 
+
 def get_sell_price(stock: STOCK) -> float:
+    now = datetime.now().strftime('%d-%m-%Y %H:%M:%S')
+    prior_time = (datetime.now() - timedelta(minutes=25)).strftime('%d-%m-%Y %H:%M:%S')
     start_secs = '01-02-2025 14:00:00'
     end_secs = '01-02-2025 15:00:00'
 
-    df = get_time_series_data(start_secs, end_secs, interval=1, token=stock.TOKEN,exchange=stock.EXCHANGE)
+    df = get_time_series_data(prior_time, now, interval=1, token=stock.TOKEN,exchange=stock.EXCHANGE)
+    print(df)
     last_price = get_last_traded_price(df)
     return last_price
 
+
 def get_buy_price(stock: STOCK)-> float:
+    now = datetime.now().strftime('%d-%m-%Y %H:%M:%S')
+    prior_time = (datetime.now() - timedelta(minutes=25)).strftime('%d-%m-%Y %H:%M:%S')
     start_secs = '01-02-2025 15:00:00'
     end_secs = '01-02-2025 15:15:00'
 
-    df = get_time_series_data(start_secs, end_secs, interval=1, token=stock.TOKEN,exchange=stock.EXCHANGE)
+    df = get_time_series_data(prior_time, now, interval=1, token=stock.TOKEN,exchange=stock.EXCHANGE)
+    print(df)
     last_price = get_last_traded_price(df)
     return last_price
+
+if __name__ == '__main__':
+    now = datetime.now()
+    today931 = now.replace(hour=15, minute=00, second=0, microsecond=0).strftime('%d-%m-%Y %H:%M:%S')
+    today315 = now.replace(hour=15, minute=20, second=0, microsecond=0).strftime('%d-%m-%Y %H:%M:%S')
+
+    print(str(today315))

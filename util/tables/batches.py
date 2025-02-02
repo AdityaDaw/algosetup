@@ -17,7 +17,7 @@ class Batches(Base):
     TRADING_TOKEN: Mapped[Optional[str]]
     STATUS: Mapped[Optional[str]]
     PURCHASE_PRICE: Mapped[Optional[float]]
-    SELILNG_PRICE: Mapped[Optional[float]]
+    SELLING_PRICE: Mapped[Optional[float]]
     QUANTITY: Mapped[int]
     VALUE: Mapped[Optional[float]]
 
