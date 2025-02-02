@@ -27,7 +27,7 @@ def main_function():
 
     while True:
         if number_of_day not in [5,6]:
-            logger.info(f"Today is not Sunday or Saturday going with the loop")
+            logger.debug(f"Today is not Sunday or Saturday going with the loop")
 
             if datetime.now() == at_2_55_pm:
                 logger.info("Starting the loop at 2:55 pm")
